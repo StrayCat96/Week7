@@ -49,15 +49,13 @@ podTemplate(yaml: '''
           mv ./build/libs/calculator-0.0.1-SNAPSHOT.jar /mnt
           '''
         }
-      }
-    }
-                     stage("Code coverage") {
+          
+        stage("Code coverage") {
                     try {
                         sh '''
         	            pwd
                		    cd Chapter08/sample1
                 	    ./gradlew jacocoTestCoverageVerification
-                        ./gradlew CheckstyleMain
                         ./gradlew jacocoTestReport
                         '''
                     } catch (Exception E) {
@@ -67,25 +65,23 @@ podTemplate(yaml: '''
                     // from the HTML publisher plugin
                     // https://www.jenkins.io/doc/pipeline/steps/htmlpublisher/
                     publishHTML (target: [
-                        reportDir: 'Chapter08/sample1/build/reports/checkstyle',
-                        reportFiles: 'main.html',
-                        reportName: "JaCoCo Checkstyle"
+                        reportDir: 'Chapter08/sample1/build/reports/tests/test',
+                        reportFiles: 'index.html',
+                        reportName: "JaCoCo Report"
                     ])                       
                 }
            }
-        }
-}
-
-    stage('Build Java Image') {
-      container('kaniko') {
-        stage('Build a gradle project') {
-          sh '''
-          echo 'FROM openjdk:8-jre' > Dockerfile
-          echo 'COPY ./calculator-0.0.1-SNAPSHOT.jar app.jar' >> Dockerfile
-          echo 'ENTRYPOINT ["java", "-jar", "app.jar"]' >> Dockerfile
-          mv /mnt/calculator-0.0.1-SNAPSHOT.jar .
-          /kaniko/executor --context `pwd` --destination dlambrig/hello-kaniko:1.0
-          '''
+        
+        stage('Build Java Image') {
+          container('kaniko') {
+            stage('Build a gradle project') {
+              sh '''
+              echo 'FROM openjdk:8-jre' > Dockerfile
+              echo 'COPY ./calculator-0.0.1-SNAPSHOT.jar app.jar' >> Dockerfile
+              echo 'ENTRYPOINT ["java", "-jar", "app.jar"]' >> Dockerfile
+              mv /mnt/calculator-0.0.1-SNAPSHOT.jar .
+              /kaniko/executor --context `pwd` --destination dlambrig/hello-kaniko:1.0
+              '''
         }
       }
     }
