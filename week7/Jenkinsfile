@@ -74,7 +74,6 @@ podTemplate(yaml: '''
                 }
            }
         }
-    }
 }
 
     stage('Build Java Image') {
