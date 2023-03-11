@@ -61,7 +61,6 @@ podTemplate(yaml: '''
               {
                   echo "I am the ${env.BRANCH_NAME} branch"
         stage('Build a gradle project') {
-            try {
           sh '''
           echo 'FROM openjdk:8-jre' > Dockerfile
           echo 'COPY ./calculator-0.0.1-SNAPSHOT.jar app.jar' >> Dockerfile
@@ -75,7 +74,6 @@ podTemplate(yaml: '''
                   else {
             (env.BRANCH_NAME == "feature")
             stage('Build a gradle project') {
-            try {
           sh '''
           echo 'FROM openjdk:8-jre' > Dockerfile
           echo 'COPY ./calculator-0.0.1-SNAPSHOT.jar app.jar' >> Dockerfile
