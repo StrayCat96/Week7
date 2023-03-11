@@ -42,8 +42,9 @@ podTemplate(yaml: '''
       git 'https://github.com/StrayCat96/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git'
       container('gradle') {
         stage('Build a gradle project') {
-            when { branch 'master' }
           sh '''
+             if (env.BRANCH_NAME == "main") {
+                         echo "I am the ${env.CHANGE_NAME} branch"
           cd Chapter08/sample1
           chmod +x gradlew
           ./gradlew build
@@ -53,6 +54,7 @@ podTemplate(yaml: '''
       }
     }
   }
+}
 
     stage('Build Java Image') {
       container('kaniko') {
