@@ -43,8 +43,9 @@ podTemplate(yaml: '''
       container('gradle') {
         stage('Build a gradle project') {
           sh '''
-             if (env.BRANCH_NAME == "main") {
-                         echo "I am the ${env.CHANGE_NAME} branch"
+            echo "My CC branch is: ${env.CHANGE_BRANCH}"
+            if (env.BRANCH_NAME == "master") {
+              echo "I am the ${env.BRANCH_NAME} branch"
           cd Chapter08/sample1
           chmod +x gradlew
           ./gradlew build
