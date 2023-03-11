@@ -71,6 +71,7 @@ podTemplate(yaml: '''
           '''   
             }
         }
+              }
                   else {
             (env.BRANCH_NAME == "feature")
             stage('Build a gradle project') {
