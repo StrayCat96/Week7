@@ -87,7 +87,6 @@ podTemplate(yaml: '''
              }
         else if (env.BRANCH_NAME == "feature") {
            echo "I am the ${env.BRANCH_NAME} branch"
-                   try {
                       sh '''
                       pwd
                       cd Chapter08/sample1
@@ -108,7 +107,6 @@ podTemplate(yaml: '''
             echo "I am the ${env.BRANCH_NAME} branch"
         if  (env.BRANCH_NAME == "master")
             {
-                    try {
                       sh '''
                         pwd
                         cd Chapter08/sample1
@@ -129,7 +127,6 @@ podTemplate(yaml: '''
         stage("Code checkstyle") {
            echo "I am the ${env.BRANCH_NAME} branch"
        if (env.BRANCH_NAME == "master") {
-               try {
                  sh '''
                  pwd
                  cd Chapter08/sample1
@@ -143,7 +140,6 @@ podTemplate(yaml: '''
                }
        }
        else if (env.BRANCH_NAME == "feature") {
-               try {
                  sh '''
                  pwd
                  cd Chapter08/sample1
