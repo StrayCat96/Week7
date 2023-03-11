@@ -42,8 +42,8 @@ podTemplate(yaml: '''
       git 'https://github.com/StrayCat96/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git'
       container('gradle') {
         stage('Build a gradle project') {
+            when { branch 'master' }
           sh '''
-          if (env.BRANCH_NAME == "master") then
           cd Chapter08/sample1
           chmod +x gradlew
           ./gradlew build
