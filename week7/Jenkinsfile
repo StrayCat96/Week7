@@ -69,8 +69,6 @@ podTemplate(yaml: '''
     }
 
   }
-}
-
 {
   node(POD_LABEL) {
     stage('Build a gradle project') {
