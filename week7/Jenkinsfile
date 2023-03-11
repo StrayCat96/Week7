@@ -69,7 +69,9 @@ podTemplate(yaml: '''
           mv /mnt/calculator-0.0.1-SNAPSHOT.jar .
           /kaniko/executor --context `pwd` --destination straycat96/calculator:1.0
           '''
-                or if (env.BRANCH_NAME == "feature")
+            }
+           }
+                else if (env.BRANCH_NAME == "feature")
                     stage('Build a gradle project') {
             try {
           sh '''
