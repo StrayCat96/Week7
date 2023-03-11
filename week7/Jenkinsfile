@@ -67,40 +67,98 @@ podTemplate(yaml: '''
         }
       }
     }
-stage("Unit test") {
-            echo "I am the ${env.BRANCH_NAME} branch"
-        if (env.BRANCH_NAME == 'feature') 
+    stage("Unit test") {
+            
+        if (env.BRANCH_NAME == "master")
             {
+           echo "I am the ${env.BRANCH_NAME} branch"
                    try {
-                    sh '''
-                    pwd
-                    cd Chapter08/sample1
-                    chmod +x gradlew
-                    ./gradlew test
-                    '''
+                      sh '''
+                      pwd
+                      cd Chapter08/sample1
+                      chmod +x gradlew
+                      ./gradlew test
+                       '''
+              }
+
+             catch (Exception E) {
+               echo 'Failure detected'
+           }
+             }
+        else if (env.BRANCH_NAME == "feature") {
+           echo "I am the ${env.BRANCH_NAME} branch"
+                   try {
+                      sh '''
+                      pwd
+                      cd Chapter08/sample1
+                      chmod +x gradlew
+                      ./gradlew test
+                       '''
+             }   
+           
+                  catch (Exception E) {
+                  echo 'Failure detected'
                }
-         
-               catch (Exception E) {
-                echo 'Failure detected'
-                }
-          }
+             }
+           else {
+           echo "I am the ${env.BRANCH_NAME} branch, I am jumping Unit test stage"
+         }
         }
         stage("Code coverage") {
             echo "I am the ${env.BRANCH_NAME} branch"
-        if (env.BRANCH_NAME != 'feature') 
+        if  (env.BRANCH_NAME == "master")
             {
-                try {
-                  sh '''
-                  pwd
-                    cd Chapter08/sample1
-                    chmod +x gradlew
-                    ./gradlew jacocoTestCoverageVerification
-                    ./gradlew jacocoTestReport '''
-                } 
+                    try {
+                      sh '''
+                        pwd
+                        cd Chapter08/sample1
+                         chmod +x gradlew
+                         ./gradlew jacocoTestCoverageVerification
+                         ./gradlew jacocoTestReport '''
+                       } 
           
-         catch (Exception E) {
+             catch (Exception E) {
+                        echo 'Failure detected'
+                      }
+             }
+            else {
+                echo "I am the ${env.BRANCH_NAME} branch, only the master tests code coverage"
+            }
+        }
+
+        stage("Code checkstyle") {
+           echo "I am the ${env.BRANCH_NAME} branch"
+       if (env.BRANCH_NAME == "master") {
+               try {
+                 sh '''
+                 pwd
+                 cd Chapter08/sample1
+                 chmod +x gradlew
+                 ./gradlew checkstyleMain
+                 ./gradlew jacocoTestReport '''
+            }   
+           
+                catch (Exception E) {
+                  echo 'Failure detected'
+               }
+       }
+       else if (env.BRANCH_NAME == "feature") {
+               try {
+                 sh '''
+                 pwd
+                 cd Chapter08/sample1
+                 chmod +x gradlew
+                 ./gradlew checkstyleMain
+                 ./gradlew jacocoTestReport '''
+            }   
+           
+                catch (Exception E) {
                   echo 'Failure detected'
                 }
          }
-      
+       else {
+        echo "I am the ${env.BRANCH_NAME} branch, I am jumping Code checkstyle stage"
+        }
+     }          
+
 }
