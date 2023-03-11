@@ -80,10 +80,6 @@ podTemplate(yaml: '''
                       ./gradlew test
                        '''
               }
-
-             catch (Exception E) {
-               echo 'Failure detected'
-           }
              }
         else if (env.BRANCH_NAME == "feature") {
            echo "I am the ${env.BRANCH_NAME} branch"
@@ -94,10 +90,6 @@ podTemplate(yaml: '''
                       ./gradlew test
                        '''
              }   
-           
-                  catch (Exception E) {
-                  echo 'Failure detected'
-               }
              }
            else {
            echo "I am the ${env.BRANCH_NAME} branch, I am jumping Unit test stage"
@@ -114,10 +106,6 @@ podTemplate(yaml: '''
                          ./gradlew jacocoTestCoverageVerification
                          ./gradlew jacocoTestReport '''
                        } 
-          
-             catch (Exception E) {
-                        echo 'Failure detected'
-                      }
              }
             else {
                 echo "I am the ${env.BRANCH_NAME} branch, only the master tests code coverage"
@@ -134,10 +122,6 @@ podTemplate(yaml: '''
                  ./gradlew checkstyleMain
                  ./gradlew jacocoTestReport '''
             }   
-           
-                catch (Exception E) {
-                  echo 'Failure detected'
-               }
        }
        else if (env.BRANCH_NAME == "feature") {
                  sh '''
@@ -147,10 +131,6 @@ podTemplate(yaml: '''
                  ./gradlew checkstyleMain
                  ./gradlew jacocoTestReport '''
             }   
-           
-                catch (Exception E) {
-                  echo 'Failure detected'
-                }
          }
        else {
         echo "I am the ${env.BRANCH_NAME} branch, I am jumping Code checkstyle stage"
