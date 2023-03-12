@@ -146,6 +146,10 @@ podTemplate(yaml: '''
 
     stage('Build Java Image') {
       container('kaniko') {
+          
+          if (env.BRANCH_NAME == "master")
+          {
+              echo "I am the ${env.BRANCH_NAME} branch"
         stage('Build a gradle project') {
           sh '''
           echo 'FROM openjdk:8-jre' > Dockerfile
@@ -154,6 +158,19 @@ podTemplate(yaml: '''
           mv /mnt/calculator-0.0.1-SNAPSHOT.jar .
           /kaniko/executor --context `pwd` --destination straycat96/calculator:1.0
           '''
+        }
+              else if (env.BRANCH_NAME == "feature") {
+                  {
+                    echo "I am the ${env.BRANCH_NAME} branch" 
+     
+              sh '''
+              echo 'FROM openjdk:8-jre' > Dockerfile
+              echo 'COPY ./calculator-0.0.1-SNAPSHOT.jar app.jar' >> Dockerfile
+              echo 'ENTRYPOINT ["java", "-jar", "app.jar"]' >> Dockerfile
+              mv /mnt/calculator-0.0.1-SNAPSHOT.jar .
+              /kaniko/executor --context `pwd` --destination straycat96/calculator-feature:0.1
+              '''
+            
         }
       }
     }
