@@ -48,46 +48,142 @@ podTemplate(yaml: '''
           ./gradlew build
           mv ./build/libs/calculator-0.0.1-SNAPSHOT.jar /mnt
           '''
-        }
-          
-        stage("Code coverage") {
-                    try {
-                        sh '''
-                        if (env.BRANCH_NAME == "master") {
-        	            pwd
-               		    cd Chapter08/sample1
-                	    ./gradlew jacocoTestCoverageVerification
-                        ./gradlew jacocoTestReport
-                        '''
-                    } catch (Exception E) {
-                        echo 'Failure detected'
-                    }
+            
+            
+            stage("Unit test") {
+            
+        if (env.BRANCH_NAME == "master")
+            {
+           echo "I am the ${env.BRANCH_NAME} branch"
+                   try {
+                      sh '''
+                      pwd
+                      cd Chapter08/sample1
+                      chmod +x gradlew
+                      ./gradlew test
+                       '''
+              }
 
-                    // from the HTML publisher plugin
-                    // https://www.jenkins.io/doc/pipeline/steps/htmlpublisher/
-                    publishHTML (target: [
-                        reportDir: 'Chapter08/sample1/build/reports/tests/test',
-                        reportFiles: 'index.html',
-                        reportName: "JaCoCo Report"
-                    ])                       
-                }
+             catch (Exception E) {
+               echo 'Failure detected'
            }
-    }
-        
-        stage('Build Java Image') {
-          container('kaniko') {
-            stage('Build a gradle project') {
+             }
+        else if (env.BRANCH_NAME == "feature") {
+           echo "I am the ${env.BRANCH_NAME} branch"
+                   try {
+                      sh '''
+                      pwd
+                      cd Chapter08/sample1
+                      chmod +x gradlew
+                      ./gradlew test
+                       '''
+             }   
+           
+                  catch (Exception E) {
+                  echo 'Failure detected'
+               }
+             }
+           else {
+           echo "I am the ${env.BRANCH_NAME} branch"
+         }
+        }
+            
+            
+            
+            
+        stage("Code coverage") {
+            if  (env.BRANCH_NAME == "master") {
+                 echo "I am the ${env.BRANCH_NAME} branch"
+                try {
+                      sh '''
+                        pwd
+                        cd Chapter08/sample1
+                         chmod +x gradlew
+                         ./gradlew jacocoTestCoverageVerification
+                         ./gradlew jacocoTestReport '''
+                       } 
+          
+             catch (Exception E) {
+                        echo 'Failure detected'
+                      }
+             }
+        }
+
+
+        stage("Code checkstyle") {
+           echo "I am the ${env.BRANCH_NAME} branch"
+       if (env.BRANCH_NAME == "master") {
+               try {
+                 sh '''
+                 pwd
+                 cd Chapter08/sample1
+                 chmod +x gradlew
+                 ./gradlew checkstyleMain
+                 ./gradlew jacocoTestReport '''
+            }   
+           
+                catch (Exception E) {
+                  echo 'Failure detected'
+               }
+       }
+       else if (env.BRANCH_NAME == "feature") {
+               try {
+                 sh '''
+                 pwd
+                 cd Chapter08/sample1
+                 chmod +x gradlew
+                 ./gradlew checkstyleMain
+                 ./gradlew jacocoTestReport '''
+            }   
+           
+                catch (Exception E) {
+                  echo 'Failure detected'
+                }
+         }
+       else {
+        echo "I am the ${env.BRANCH_NAME} branch"
+        }
+     }          
+
+
+
+    stage('Build Java Image') {
+      container('kaniko') {
+        stage('Build a gradle project') {
+            echo "I am the ${env.BRANCH_NAME} branch"
+       if (env.BRANCH_NAME == "master") {
+               try {
+                 sh '''
+                 echo 'FROM openjdk:8-jre' > Dockerfile
+                 echo 'COPY ./calculator-0.0.1-SNAPSHOT.jar app.jar' >> Dockerfile
+                 echo 'ENTRYPOINT ["java", "-jar", "app.jar"]' >> Dockerfile
+                 mv /mnt/calculator-0.0.1-SNAPSHOT.jar .
+                 /kaniko/executor --context `pwd` --destination straycat96/calculator:1.0 '''
+            }
+                catch (Exception E) {
+                  echo 'Failure detected'
+               }
+         
+       if (env.BRANCH_NAME == "feature") {
+            try {
               sh '''
               echo 'FROM openjdk:8-jre' > Dockerfile
               echo 'COPY ./calculator-0.0.1-SNAPSHOT.jar app.jar' >> Dockerfile
               echo 'ENTRYPOINT ["java", "-jar", "app.jar"]' >> Dockerfile
               mv /mnt/calculator-0.0.1-SNAPSHOT.jar .
-              /kaniko/executor --context `pwd` --destination straycat96/hello-kaniko:1.0
+              /kaniko/executor --context `pwd` --destination straycat96/calculator-feature:0.1
               '''
-         }
-       }
-     }
-
-   }
+              }
+               catch (Exception E) {
+                  echo 'Failure detected'
+               }
+            }
+        }
+      }
+    }
+        }
+      }
+    }
+  }
  }
 }
