@@ -142,10 +142,7 @@ podTemplate(yaml: '''
         }
      }          
 
-} 
-        }
-      }
-    }
+
 
     stage('Build Java Image') {
       container('kaniko') {
@@ -160,5 +157,3 @@ podTemplate(yaml: '''
         }
       }
     }
-
-  }
