@@ -81,20 +81,6 @@ podTemplate(yaml: '''
                        '''
               }
              }
-        else if (env.BRANCH_NAME == "feature") {
-           echo "I am the ${env.BRANCH_NAME} branch"
-                      sh '''
-                      pwd
-                      cd Chapter08/sample1
-                      chmod +x gradlew
-                      ./gradlew test
-                       '''
-             }   
-             }
-           else {
-           echo "I am the ${env.BRANCH_NAME} branch, I am jumping Unit test stage"
-         }
-        }
         stage("Code coverage") {
             echo "I am the ${env.BRANCH_NAME} branch"
         if  (env.BRANCH_NAME == "master")
