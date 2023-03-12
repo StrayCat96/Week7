@@ -84,7 +84,7 @@ podTemplate(yaml: '''
                }
              }
            else {
-           echo "I am the ${env.BRANCH_NAME} branch, I am jumping Unit test stage"
+           echo "I am the ${env.BRANCH_NAME} branch"
          }
         }
         stage("Code coverage") {
@@ -138,7 +138,7 @@ podTemplate(yaml: '''
                 }
          }
        else {
-        echo "I am the ${env.BRANCH_NAME} branch, I am jumping Code checkstyle stage"
+        echo "I am the ${env.BRANCH_NAME} branch"
         }
      }          
 
