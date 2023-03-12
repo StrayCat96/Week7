@@ -92,9 +92,6 @@ podTemplate(yaml: '''
                          ./gradlew jacocoTestCoverageVerification
                          ./gradlew jacocoTestReport '''
                        } 
-             }
-            else {
-                echo "I am the ${env.BRANCH_NAME} branch, only the master tests code coverage"
             }
         }
 
