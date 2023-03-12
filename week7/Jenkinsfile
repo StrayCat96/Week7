@@ -90,7 +90,7 @@ podTemplate(yaml: '''
         stage("Code coverage") {
             if  (env.BRANCH_NAME == "master") {
                  echo "I am the ${env.BRANCH_NAME} branch"
-                try {
+                try
                       sh '''
                         pwd
                         cd Chapter08/sample1
