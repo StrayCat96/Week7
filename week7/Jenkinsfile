@@ -123,7 +123,7 @@ podTemplate(yaml: '''
                   echo 'Failure detected'
                }
        }
-       else if (env.BRANCH_NAME == "feature") {
+       if (env.BRANCH_NAME == "feature") {
                try {
                  sh '''
                  pwd
