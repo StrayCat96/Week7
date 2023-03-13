@@ -159,7 +159,11 @@ podTemplate(yaml: '''
                  mv /mnt/calculator-0.0.1-SNAPSHOT.jar .
                  /kaniko/executor --context `pwd` --destination straycat96/calculator:1.0 '''
                } 
-             }        
+             }   
+            
+                catch (Exception E) {
+                  echo 'Failure detected'
+               }
                 else {
                    sh '''
                  echo 'FROM openjdk:8-jre' > Dockerfile
@@ -167,11 +171,6 @@ podTemplate(yaml: '''
                  echo 'ENTRYPOINT ["java", "-jar", "app.jar"]' >> Dockerfile
                  mv /mnt/calculator-0.0.1-SNAPSHOT.jar .
                  /kaniko/executor --context `pwd` --destination straycat96/calculator-feature:0.1 '''
-               }
-            
-                catch (Exception E) {
-                  echo 'Failure detected'
-               }
          
         }
       }
